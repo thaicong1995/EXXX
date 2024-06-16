@@ -141,7 +141,7 @@ public class EmployeeServiceIpml implements EmployeeService {
         formerEmployee.setPassport_number(existingEmployee.getPassport_number());
         fomerEmployeeRepository.save(formerEmployee);
         employeeRepository.delete(existingEmployee.getId());
-
+        departmentRepository.updateEmployeeCount(de_id, -1);
         return "Successfully " + employee_id ;
     }
 

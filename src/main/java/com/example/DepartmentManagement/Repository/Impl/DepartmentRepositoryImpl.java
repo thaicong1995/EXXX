@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class DepartmentRepositoryImpl implements DepartmentRepository {
+    private static final int quantity = 0;
     private static final String SELECT_BY_ID = "SELECT id, department_name, count, room_number FROM department WHERE id = ?";
     private static final String SELECT_ALL = "SELECT id, department_name, count, room_number FROM department";
     private static final String INSERT_DEPARTMENT = "INSERT INTO department (department_name, count, room_number) VALUES (?, ?, ?)";
     private static final String UPDATE_DEPARTMENT = "UPDATE department SET department_name = ?, count = ?, room_number = ? WHERE id = ?";
     private static final String DELETE_DEPARTMENT = "DELETE FROM department WHERE id = ?";
-    private static final String UPDATE_EMPLOYEE_COUNT = "UPDATE department SET count = count + 1 WHERE id = ?";
+    private static final String UPDATE_EMPLOYEE_COUNT = "UPDATE department SET count = count + ? WHERE id = ?";
 
 
     private DbConnection databaseConnection;
@@ -129,10 +130,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public void updateEmployeeCount(int departmentId, int incrementBy) {
+    public void updateEmployeeCount(int departmentId, int quantity) {
         try (Connection conn = databaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_EMPLOYEE_COUNT)) {
-            stmt.setInt(1, departmentId);
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, departmentId);
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
